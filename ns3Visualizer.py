@@ -8,6 +8,7 @@ from threading import Thread
 pressed = False
 fontSize = 10
 
+
 class Messages(Enum):
     CLICK = 0,
     STOP = 0
@@ -21,8 +22,8 @@ class Node:
         self.posx = posx
         self.posy = posy
         self.data = data
-        self.node = canvas.create_oval(self.posx+85, self.posy+85, self.posx+115, self.posy+115, outline="black", fill=self.color, width=1)
-
+        self.node = canvas.create_oval(self.posx + 85, self.posy + 85, self.posx + 115, self.posy + 115,
+                                       outline="black", fill=self.color, width=1)
 
     def moveNode(self, posx, posy):
         print("move node")
@@ -32,11 +33,13 @@ class Node:
 
 storeNodes = list()
 
+
 class Data:
     def __init__(self, id, ip, channel):
         self.id = id
         self.ip = ip
         self.channel = channel
+
 
 def readXML(myCanvas):
     doc = xml.dom.minidom.parse("ns3.xml")
@@ -45,7 +48,7 @@ def readXML(myCanvas):
 
     addresNodes = doc.getElementsByTagName("nonp2plinkproperties")
 
-    print("%d IP adresses: " %addresNodes.length)
+    print("%d IP adresses: " % addresNodes.length)
 
     address = []
     allAddresses = []
@@ -72,6 +75,7 @@ def readXML(myCanvas):
         storeNodes.append(circle)
         count = count + 1
 
+
 def checkNode(mycanvas, label):
     for nodeHover in storeNodes:
         print("in= ")
@@ -86,9 +90,6 @@ def updateCycle(guiRef, queue):
         if msg == Messages.CLICK:
             mycanvas = guiRef.canvas
             readXML(mycanvas)
-            print("out= ")
-            print(storeNodes[0])
-
         elif msg == Messages.STOP:
             print("STOP")
             if storeNodes:
@@ -110,42 +111,43 @@ def updateCycle(guiRef, queue):
             checkNode(mycanvas, label)
 
 
-
 def create_grid(canvas):
-    w = canvas.winfo_reqwidth()-6 # Get current width of canvas
-    h = canvas.winfo_reqheight()-6 # Get current height of canvas
+    w = canvas.winfo_reqwidth() - 6  # Get current width of canvas
+    h = canvas.winfo_reqheight() - 6  # Get current height of canvas
     print(w, h)
-    canvas.delete('grid_line') # Will only remove the grid_line
-
+    canvas.delete('grid_line')  # Will only remove the grid_line
     # Creates all vertical lines at intevals of 100
-    for i in range(0, w*2, 100):
-        canvas.create_line([(i, 0), (i, h*2)], tag='grid_line')
-
+    for i in range(0, w * 2, 100):
+        canvas.create_line([(i, 0), (i, h * 2)], tag='grid_line')
     # Creates all horizontal lines at intevals of 100
-    for i in range(0, h*2, 100):
-        canvas.create_line([(0, i), (w*2, i)], tag='grid_line')
+    for i in range(0, h * 2, 100):
+        canvas.create_line([(0, i), (w * 2, i)], tag='grid_line')
+    canvas.create_line([(0, 1000), (w * 2, 1000)], tag='grid_line')
+    canvas.create_line([(1000, 0), (1000, h * 2)], tag='grid_line')
 
-    canvas.create_line([(0, 1000), (w*2, 1000)], tag='grid_line')
-    canvas.create_line([(1000, 0), (1000, h*2)], tag='grid_line')
 
-#move
+# move
 def move_start(event, canvas):
     canvas.scan_mark(event.x, event.y)
+
 
 def move_move(event, canvas):
     canvas.scan_dragto(event.x, event.y, gain=1)
 
-#move
+
+# move
 def pressed2(event, canvas):
     global pressed
     pressed = not pressed
     canvas.scan_mark(event.x, event.y)
 
+
 def move_move2(event, canvas):
     if pressed:
         canvas.scan_dragto(event.x, event.y, gain=1)
 
-#windows zoom
+
+# windows zoom
 def zoomer(event, canvas):
     global fontSize
     if (event.delta > 0):
@@ -154,17 +156,21 @@ def zoomer(event, canvas):
     elif (event.delta < 0):
         canvas.scale("all", event.x, event.y, 0.9, 0.9)
         fontSize = fontSize * 0.9
-    canvas.configure(scrollregion = canvas.bbox("all"))
+    canvas.configure(scrollregion=canvas.bbox("all"))
     for child_widget in canvas.find_withtag("text"):
         canvas.itemconfigure(child_widget, font=("Helvetica", int(fontSize)))
 
-#linux zoom
+
+# linux zoom
 def zoomerP(event, canvas):
     canvas.scale("all", event.x, event.y, 1.1, 1.1)
     canvas.configure(scrollregion=canvas.bbox("all"))
+
+
 def zoomerM(event, canvas):
     canvas.scale("all", event.x, event.y, 0.9, 0.9)
     canvas.configure(scrollregion=canvas.bbox("all"))
+
 
 def onObjectClick(event, node, label):
     print(node)
@@ -177,17 +183,20 @@ def onObjectClick(event, node, label):
     tags = event.widget.gettags(item)
     print(tags)
 
+
 def gui(frame, queue):
+    control_panel = tk.PanedWindow(frame, bg="#d2d6d6")
+    control_panel.grid(row=0, column=0, pady=15)
     label = tk.StringVar()
     label.set("Control Panel")
-    tk.Label(frame, textvariable=label).grid(row=1, column=0)
-    startbtn = tk.Button(frame, text="SIMULATE", command=lambda: queue.put(Messages.CLICK))
-    startbtn.grid(row=2, column=0)
-    nodeBtn = tk.Button(frame, text="STOP", command=lambda: queue.put(Messages.STOP))
-    nodeBtn.grid(row=3, column=0)
+    tk.Label(control_panel, bg="#d2d6d6", textvariable=label).grid(row=0, column=1, pady=5)
+    startbtn = tk.Button(control_panel, text="SIMULATE", command=lambda: queue.put(Messages.CLICK))
+    startbtn.grid(row=1, column=0, pady=5, ipady=10, ipadx=10)
+    nodeBtn = tk.Button(control_panel, text="STOP", command=lambda: queue.put(Messages.STOP))
+    nodeBtn.grid(row=1, column=2, pady=5, ipady=10, ipadx=25)
 
     panel = tk.PanedWindow(frame)
-    panel.grid(row=4, column=0, sticky="nsew", padx=200, pady=100)
+    panel.grid(row=1, column=0, sticky="nsew", padx=200, pady=50)
 
     canvas = tk.Canvas(panel, width=500, height=500, highlightbackground="black")
     xsb = tk.Scrollbar(panel, orient="horizontal", command=canvas.xview)
