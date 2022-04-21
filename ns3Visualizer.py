@@ -13,18 +13,18 @@ class Messages(Enum):
 storeNodes = list()
 
 
-def findNode(menu):
-    print("menu ", menu.get())
-    print(storeNodes)
+def findNode(menu, canvas):
+    val = 0
     for node in storeNodes:
-        print("id in for ", node.id)
+        canvas.itemconfig(node.node, fill=node.color)
         if node.id == int(menu.get()):
-            print("id ", node.id)
-            return node
+            canvas.itemconfig(node.node, fill="blue")
+            val = node
+    return val
 
 
-def checkNode(event, menu, label):
-    node = findNode(menu)
+def checkNode(menu, label, canvas):
+    node = findNode(menu, canvas)
     label.configure(text=node.printNode())
 
 
@@ -40,7 +40,7 @@ def updateCycle(guiRef, queue):
             for node in storeNodes:
                 my_menu['values'] = tuple(list(my_menu['values']) + [str(node.id)])
             my_menu.current(0)
-            my_menu.bind("<<ComboboxSelected>>", lambda event: checkNode(event, my_menu, my_label))
+            my_menu.bind("<<ComboboxSelected>>", lambda event: checkNode(my_menu, my_label, my_canvas))
 
         elif msg == Messages.STOP:
             my_canvas = guiRef.canvas
@@ -72,7 +72,7 @@ def onObjectClick(event, node, label):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.geometry("1500x1000")
+    root.geometry("1200x1000")
     root.title("Visualiser")
     queue = Queue()
     frame = tk.Frame(root, bg="#d2d6d6")
