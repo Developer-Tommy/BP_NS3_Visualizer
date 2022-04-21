@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from types import SimpleNamespace
 
 fontSize = 10
@@ -46,7 +47,21 @@ def gui(frame, queue, Messages):
 
     create_grid(canvas)
 
-    dataLabel = tk.Label(panel, text="Test", bg="yellow")
-    dataLabel.grid(row=1, column=2)
+    node_panel = tk.PanedWindow(panel)
+    node_panel.grid(row=1, column=2, sticky="nsew")
 
-    return SimpleNamespace(label=dataLabel, canvas=canvas)
+    panel1 = tk.PanedWindow(node_panel)
+    panel1.grid(row=0, column=0)
+
+    panel2 = tk.PanedWindow(node_panel)
+    panel2.grid(row=1, column=0)
+
+    variable = tk.StringVar()
+
+    menu = ttk.Combobox(panel1, state="readonly", width=20, textvariable=variable)
+    menu.grid(row=0, column=0)
+
+    dataLabel = tk.Label(panel2, text="Test", bg="yellow")
+    dataLabel.grid(row=0, column=0, sticky="nsew")
+
+    return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, menu=menu)

@@ -9,41 +9,52 @@ class Messages(Enum):
     CLICK = 0,
     STOP = 0
 
+
 storeNodes = list()
 
-def checkNode(mycanvas, label):
-    for nodeHover in storeNodes:
-        print("in= ")
-        print(nodeHover)
-        node = nodeHover
-        mycanvas.tag_bind(nodeHover.node, '<ButtonPress-1>', lambda event: onObjectClick(event, node, label))
+
+def findNode(menu):
+    print("menu ", menu.get())
+    print(storeNodes)
+    for node in storeNodes:
+        print("id in for ", node.id)
+        if node.id == int(menu.get()):
+            print("id ", node.id)
+            return node
+
+
+def checkNode(event, menu, label):
+    node = findNode(menu)
+    label.configure(text=node.printNode())
+
 
 
 def updateCycle(guiRef, queue):
     while True:
         msg = queue.get()
         if msg == Messages.CLICK:
-            mycanvas = guiRef.canvas
-            parser.readXML(mycanvas, storeNodes)
-        elif msg == Messages.STOP:
-            print("STOP")
-            if storeNodes:
-                print(storeNodes[0].data[1].channel)
-            mycanvas = guiRef.canvas
-            mycanvas.bind("<ButtonPress-1>", lambda event: move.move_start(event, mycanvas))
-            mycanvas.bind("<B1-Motion>", lambda event: move.move_move(event, mycanvas))
+            my_canvas = guiRef.canvas
+            my_menu = guiRef.menu
+            my_label = guiRef.label
+            parser.readXML(my_canvas, storeNodes)
+            for node in storeNodes:
+                my_menu['values'] = tuple(list(my_menu['values']) + [str(node.id)])
+            my_menu.current(0)
+            my_menu.bind("<<ComboboxSelected>>", lambda event: checkNode(event, my_menu, my_label))
 
-            mycanvas.bind("<ButtonPress-2>", lambda event: move.pressed2(event, mycanvas))
-            mycanvas.bind("<Motion>", lambda event: move.move_move2(event, mycanvas))
+        elif msg == Messages.STOP:
+            my_canvas = guiRef.canvas
+            my_canvas.bind("<ButtonPress-1>", lambda event: move.move_start(event, my_canvas))
+            my_canvas.bind("<B1-Motion>", lambda event: move.move_move(event, my_canvas))
+
+            my_canvas.bind("<ButtonPress-2>", lambda event: move.pressed2(event, my_canvas))
+            my_canvas.bind("<Motion>", lambda event: move.move_move2(event, my_canvas))
 
             # linux scroll
-            mycanvas.bind("<Button-4>", lambda event: zoom.zoomerP(event, mycanvas))
-            mycanvas.bind("<Button-5>", lambda event: zoom.zoomerM(event, mycanvas))
+            my_canvas.bind("<Button-4>", lambda event: zoom.zoomerP(event, my_canvas))
+            my_canvas.bind("<Button-5>", lambda event: zoom.zoomerM(event, my_canvas))
             # windows scroll
-            mycanvas.bind("<MouseWheel>", lambda event: zoom.zoomer(event, mycanvas))
-            mycanvas = guiRef.canvas
-            label = guiRef.label
-            checkNode(mycanvas, label)
+            my_canvas.bind("<MouseWheel>", lambda event: zoom.zoomer(event, my_canvas))
 
 
 
@@ -58,9 +69,10 @@ def onObjectClick(event, node, label):
     tags = event.widget.gettags(item)
     print(tags)
 
+
 if __name__ == '__main__':
     root = tk.Tk()
-    root.geometry("1000x1000")
+    root.geometry("1500x1000")
     root.title("Visualiser")
     queue = Queue()
     frame = tk.Frame(root, bg="#d2d6d6")

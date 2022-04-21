@@ -6,6 +6,10 @@ class Data:
         self.ip = ip
         self.channel = channel
 
+    def printData(self):
+        print("ip: ", self.ip, "channel: ", self.channel)
+        return "ip:", self.ip, "\n", "channel:", self.channel, "\n"
+
 class Node:
     def __init__(self, id, canvas, color, posx, posy, data):
         self.id = id
@@ -15,7 +19,15 @@ class Node:
         self.posy = posy
         self.data = data
         self.node = canvas.create_oval(self.posx + 85, self.posy + 85, self.posx + 115, self.posy + 115,
-                                       outline="black", fill=self.color, width=1)        
+                                       outline="black", fill=self.color, width=1)
+
+    def printNode(self):
+        print("id: ", self.id, " start posX: ", self.posx + 85, " start posY: ", self.posy + 85, " end posX: ", self.posx + 115, " end posY: ", self.posy + 115)
+        node = "id:", self.id, "\n", "start posX:", self.posx + 85, "\n", "start posY:", self.posy + 85, "\n", "end posX:", self.posx + 115, "\n", "end posY:", self.posy + 115, "\n"
+        for d in self.data:
+            node += d.printData()
+        return node
+
 
 def readXML(myCanvas, storeNodes):
     doc = xml.dom.minidom.parse("ns3.xml")
@@ -41,8 +53,6 @@ def readXML(myCanvas, storeNodes):
 
     allAddresses.append(address)
 
-    print(allAddresses)
-
     count = 0
 
     for node in nodes:
@@ -50,3 +60,4 @@ def readXML(myCanvas, storeNodes):
         circle = Node(int(node.getAttribute("id")), myCanvas, color, int(node.getAttribute("locX")), int(node.getAttribute("locY")), allAddresses[count])
         storeNodes.append(circle)
         count = count + 1
+
