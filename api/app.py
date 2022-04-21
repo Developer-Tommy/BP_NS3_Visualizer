@@ -61,7 +61,7 @@ def gui(frame, queue, Messages):
     menu = ttk.Combobox(panel1, state="readonly", width=25, textvariable=variable)
     menu.grid(row=0, column=0)
 
-    dataLabel = tk.Label(panel2, text="Test", bg="yellow")
-    dataLabel.grid(row=0, column=0, sticky="nsew")
+    dataLabel = tk.Label(panel2)
+    dataLabel.grid(row=0, column=0, sticky="nsew", ipadx=20, ipady=20)
 
-    return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, menu=menu)
+    return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, panel2=panel2, menu=menu)

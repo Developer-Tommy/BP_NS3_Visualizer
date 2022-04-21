@@ -13,22 +13,6 @@ class Messages(Enum):
 storeNodes = list()
 
 
-def findNode(menu, canvas):
-    val = 0
-    for node in storeNodes:
-        canvas.itemconfig(node.node, fill=node.color)
-        if node.id == int(menu.get()):
-            canvas.itemconfig(node.node, fill="blue")
-            val = node
-    return val
-
-
-def checkNode(menu, label, canvas):
-    node = findNode(menu, canvas)
-    label.configure(text=node.printNode())
-
-
-
 def updateCycle(guiRef, queue):
     while True:
         msg = queue.get()
@@ -36,11 +20,12 @@ def updateCycle(guiRef, queue):
             my_canvas = guiRef.canvas
             my_menu = guiRef.menu
             my_label = guiRef.label
+            my_panel2 = guiRef.panel2
             parser.readXML(my_canvas, storeNodes)
             for node in storeNodes:
                 my_menu['values'] = tuple(list(my_menu['values']) + [str(node.id)])
             my_menu.current(0)
-            my_menu.bind("<<ComboboxSelected>>", lambda event: checkNode(my_menu, my_label, my_canvas))
+            my_menu.bind("<<ComboboxSelected>>", lambda event: nodeData.checkNode(my_menu, my_label, my_canvas, my_panel2, storeNodes))
 
         elif msg == Messages.STOP:
             my_canvas = guiRef.canvas
