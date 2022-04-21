@@ -54,12 +54,12 @@ def gui(frame, queue, Messages):
     panel1.grid(row=0, column=0)
 
     panel2 = tk.PanedWindow(node_panel)
-    panel2.grid(row=1, column=0, pady=20)
+    panel2.grid(row=1, column=0, pady=30)
 
     variable = tk.StringVar()
 
     menu = ttk.Combobox(panel1, state="readonly", width=25, textvariable=variable)
-    menu.grid(row=0, column=0)
+    menu.grid(row=0, column=0, pady=10)
 
     dataLabel = tk.Label(panel2)
     dataLabel.grid(row=0, column=0, sticky="nsew", ipadx=20, ipady=20)

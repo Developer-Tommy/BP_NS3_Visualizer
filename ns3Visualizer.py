@@ -42,7 +42,6 @@ def updateCycle(guiRef, queue):
             my_canvas.bind("<MouseWheel>", lambda event: zoom.zoomer(event, my_canvas))
 
 
-
 def onObjectClick(event, node, label):
     print(node)
     label.config(text="")

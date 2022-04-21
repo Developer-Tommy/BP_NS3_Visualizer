@@ -8,7 +8,7 @@ class Data:
 
     def printData(self):
         print("ip: ", self.ip, "channel: ", self.channel)
-        return "\n" + "ip :" + str(self.ip) + "\n" + "channel :" + str(self.channel) + "\n"
+        return "\n" + "ip: " + str(self.ip) + "\n" + "channel: " + str(self.channel) + "\n"
 
 class Node:
     def __init__(self, id, canvas, color, posx, posy, data):
@@ -23,7 +23,7 @@ class Node:
 
     def printNode(self):
         print("id: ", self.id, " start posX: ", self.posx + 85, " start posY: ", self.posy + 85, " end posX: ", self.posx + 115, " end posY: ", self.posy + 115)
-        node = "id :" + str(self.id) + "\n" + "start posX :" + str(self.posx) + "\n" + "start posY :" + str(self.posy) + "\n" + "end posX :" + str(self.posx) + "\n" + "end posY :" + str(self.posy) + "\n"
+        node = "id: " + str(self.id) + "\n" + "start posX: " + str(self.posx) + "\n" + "start posY: " + str(self.posy) + "\n" + "end posX: " + str(self.posx) + "\n" + "end posY: " + str(self.posy) + "\n"
         for d in self.data:
             node += d.printData()
         return node
