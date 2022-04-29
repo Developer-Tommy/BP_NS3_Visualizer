@@ -11,19 +11,42 @@ class Data:
         return "\n" + "ip: " + str(self.ip) + "\n" + "channel: " + str(self.channel) + "\n"
 
 class Node:
-    def __init__(self, id, canvas, color, posx, posy, data):
+    def __init__(self, id, canvas, posx, posy, color, desc, data):
         self.id = id
         self.canvas = canvas
-        self.color = color
         self.posx = posx
         self.posy = posy
         self.data = data
-        self.node = canvas.create_oval(self.posx + 85, self.posy + 85, self.posx + 115, self.posy + 115,
+        self.desc = desc
+        self.color = color
+        self.node = canvas.create_oval(self.posx, self.posy, self.posx, self.posy,
                                        outline="black", fill=self.color, width=1)
+    # setter method
+    def set_color(self, new_color):
+        self.color = new_color
+        self.canvas.itemconfig(self.node, fill=new_color)
+
+    def set_pos(self, new_posX, new_posY):
+        self.posx = new_posX
+        self.posy = new_posY
+        self.canvas.move(self.node, new_posX, new_posY)
+
+    def set_size(self, new_width, new_height):
+        new_width = new_width * 25
+        new_height = new_height * 25
+        x0, y0, x1, y1 = self.canvas.coords(self.node)
+        self.canvas.coords(self.node, x0-new_width, y0-new_height, x1+new_width, y1+new_height)
+        x0, y0, x1, y1 = self.canvas.coords(self.node)
+        print(x0, y0, x1, y1)
+        print("\n")
+
+    def set_description(self, new_desc):
+        print(new_desc)
+        self.desc = new_desc
 
     def printNode(self):
         print("id: ", self.id, " start posX: ", self.posx + 85, " start posY: ", self.posy + 85, " end posX: ", self.posx + 115, " end posY: ", self.posy + 115)
-        node = "id: " + str(self.id) + "\n" + "start posX: " + str(self.posx) + "\n" + "start posY: " + str(self.posy) + "\n" + "end posX: " + str(self.posx) + "\n" + "end posY: " + str(self.posy) + "\n"
+        node = "id: " + str(self.id) + "\n" + "Desc: " + str(self.desc) + "\n " + "start posX: " + str(self.posx) + "\n" + "start posY: " + str(self.posy) + "\n" + "end posX: " + str(self.posx) + "\n" + "end posY: " + str(self.posy) + "\n"
         for d in self.data:
             node += d.printData()
         return node
@@ -55,9 +78,32 @@ def readXML(myCanvas, storeNodes):
 
     count = 0
 
+    print(len(nu))
+
+    #delete zle vymazava
     for node in nodes:
-        color = '#%02x%02x%02x' % (int(nu[count].getAttribute("r")), int(nu[count].getAttribute("g")), int(nu[count].getAttribute("b")))
-        circle = Node(int(node.getAttribute("id")), myCanvas, color, int(node.getAttribute("locX")), int(node.getAttribute("locY")), allAddresses[count])
+        circle = Node(int(node.getAttribute("id")), myCanvas, int(node.getAttribute("locX")), int(node.getAttribute("locY")), "red", "", allAddresses[count])
+        print("nodeID: ", int(node.getAttribute("id")))
+        for n in nu:
+            print("nuID: ", n.getAttribute("id"))
+            if int(n.getAttribute("id")) == int(node.getAttribute("id")):
+                if int(n.getAttribute("t")) > 0:
+                    break
+                node_update(circle, n)
         storeNodes.append(circle)
         count = count + 1
+
+
+def node_update(node, update):
+    if update.getAttribute("p") == "c":
+        color = '#%02x%02x%02x' % (int(update.getAttribute("r")), int(update.getAttribute("g")), int(update.getAttribute("b")))
+        node.set_color(color)
+    elif update.getAttribute("p") == "s":
+        node.set_size(int(update.getAttribute("w")), int(update.getAttribute("h")))
+    elif update.getAttribute("p") == "p":
+        node.set_pos(int(update.getAttribute("x")), int(update.getAttribute("y")))
+    elif update.getAttribute("p") == "d":
+        node.set_description(update.getAttribute("descr"))
+    else:
+        return
 
