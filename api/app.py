@@ -1,8 +1,11 @@
+import time
 import tkinter as tk
 from tkinter import ttk
 from types import SimpleNamespace
+import xml.dom.minidom
 
 fontSize = 10
+doc = xml.dom.minidom.parse("ns3.xml")
 
 def create_grid(canvas):
     w = canvas.winfo_reqwidth() - 6  # Get current width of canvas
@@ -65,3 +68,12 @@ def gui(frame, queue, Messages):
     dataLabel.grid(row=0, column=0, sticky="nsew", ipadx=20, ipady=20)
 
     return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, panel2=panel2, menu=menu)
+
+
+def get_dom():
+    return doc
+
+def  draw_communication(srcX, srcY, dstX, dstY, canvas):
+    arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST)
+    time.sleep(0.5)
+    canvas.delete(arrow)

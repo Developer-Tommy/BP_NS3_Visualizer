@@ -1,4 +1,6 @@
+import time
 import xml.dom.minidom
+from api import *
 
 class Data:
     def __init__(self, id, ip, channel):
@@ -53,13 +55,11 @@ class Node:
 
 
 def readXML(myCanvas, storeNodes):
-    doc = xml.dom.minidom.parse("ns3.xml")
+    doc = app.get_dom()
     nodes = doc.getElementsByTagName("node")
     nu = doc.getElementsByTagName("nu")
 
     addresNodes = doc.getElementsByTagName("nonp2plinkproperties")
-
-    print("%d IP adresses: " % addresNodes.length)
 
     address = []
     allAddresses = []
@@ -80,12 +80,12 @@ def readXML(myCanvas, storeNodes):
 
     print(len(nu))
 
-    #delete zle vymazava
+    #Node Updates check 
     for node in nodes:
         circle = Node(int(node.getAttribute("id")), myCanvas, int(node.getAttribute("locX")), int(node.getAttribute("locY")), "red", "", allAddresses[count])
-        print("nodeID: ", int(node.getAttribute("id")))
+        # print("nodeID: ", int(node.getAttribute("id")))
         for n in nu:
-            print("nuID: ", n.getAttribute("id"))
+            # print("nuID: ", n.getAttribute("id"))
             if int(n.getAttribute("id")) == int(node.getAttribute("id")):
                 if int(n.getAttribute("t")) > 0:
                     break
@@ -106,4 +106,17 @@ def node_update(node, update):
         node.set_description(update.getAttribute("descr"))
     else:
         return
+
+
+def load_simulation(arr_of_communication, storeNodes, canvas):
+    for line in arr_of_communication:
+
+        source_node = nodeData.findNode_by_id(line.getAttribute("fId"), storeNodes)
+        destination_node = nodeData.findNode_by_id(line.getAttribute("tId"), storeNodes)
+        app.draw_communication(source_node.posx, source_node.posy, destination_node.posx, destination_node.posy, canvas)
+        
+
+
+
+
 

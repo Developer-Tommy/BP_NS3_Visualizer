@@ -12,3 +12,9 @@ def checkNode(menu, label, canvas, panel, nodes):
     node = findNode(menu, canvas, nodes)
     panel.configure(background="black", borderwidth=2)
     label.configure(text=node.printNode())
+
+def findNode_by_id( node_id, storeNodes):
+    for node in storeNodes:
+        if node.id == int(node_id):
+            return node
+    return None

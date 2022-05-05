@@ -41,17 +41,19 @@ def updateCycle(guiRef, queue):
             # windows scroll
             my_canvas.bind("<MouseWheel>", lambda event: zoom.zoomer(event, my_canvas))
 
+            parser.load_simulation(app.get_dom().getElementsByTagName("p"), storeNodes, my_canvas)
 
-def onObjectClick(event, node, label):
-    print(node)
-    label.config(text="")
-    label.config(text=node.data[0].id)
-    print(node.data[0].id)
-    print('Got object click', event.x, event.y)
-    print(event.widget.find_closest(event.x, event.y))
-    item = event.widget.find_closest(event.x, event.y)[0]
-    tags = event.widget.gettags(item)
-    print(tags)
+
+# def onObjectClick(event, node, label):
+#     print(node)
+#     label.config(text="")
+#     label.config(text=node.data[0].id)
+#     print(node.data[0].id)
+#     print('Got object click', event.x, event.y)
+#     print(event.widget.find_closest(event.x, event.y))
+#     item = event.widget.find_closest(event.x, event.y)[0]
+#     tags = event.widget.gettags(item)
+#     print(tags)
 
 
 if __name__ == '__main__':
