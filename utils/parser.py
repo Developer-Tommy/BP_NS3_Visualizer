@@ -1,6 +1,7 @@
 import time
 import xml.dom.minidom
 from api import *
+from tkinter import filedialog
 
 class Data:
     def __init__(self, id, ip, channel):
@@ -54,8 +55,7 @@ class Node:
         return node
 
 
-def readXML(myCanvas, storeNodes):
-    doc = app.get_dom()
+def readXML(myCanvas, storeNodes, doc):
     nodes = doc.getElementsByTagName("node")
     nu = doc.getElementsByTagName("nu")
 
@@ -108,13 +108,20 @@ def node_update(node, update):
         return
 
 
-def load_simulation(arr_of_communication, storeNodes, canvas):
-    for line in arr_of_communication:
 
-        source_node = nodeData.findNode_by_id(line.getAttribute("fId"), storeNodes)
-        destination_node = nodeData.findNode_by_id(line.getAttribute("tId"), storeNodes)
-        app.draw_communication(source_node.posx, source_node.posy, destination_node.posx, destination_node.posy, canvas)
-        
+
+
+
+    # for line in simulation:
+    #     source_node = nodeData.findNode_by_id(line.getAttribute("fId"), storeNodes)
+    #     destination_node = nodeData.findNode_by_id(line.getAttribute("tId"), storeNodes)
+    #     app.draw_communication(source_node.posx, source_node.posy, destination_node.posx, destination_node.posy, canvas)
+    # return counter
+
+
+def file_open():
+    path = filedialog.askopenfilename(filetypes=[("SEM readable files", ( ".xml")), ("SEM XML files", ("*.xml", ".sem")), ("All files", ".*")])
+    return path
 
 
 

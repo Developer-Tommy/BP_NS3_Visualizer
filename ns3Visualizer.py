@@ -4,44 +4,8 @@ from enum import Enum
 from threading import Thread
 from api import *
 from utils import *
+import Logic as logic
 
-class Messages(Enum):
-    CLICK = 0,
-    STOP = 0
-
-
-storeNodes = list()
-
-
-def updateCycle(guiRef, queue):
-    while True:
-        msg = queue.get()
-        if msg == Messages.CLICK:
-            my_canvas = guiRef.canvas
-            my_menu = guiRef.menu
-            my_label = guiRef.label
-            my_panel2 = guiRef.panel2
-            parser.readXML(my_canvas, storeNodes)
-            for node in storeNodes:
-                my_menu['values'] = tuple(list(my_menu['values']) + [str(node.id)])
-            my_menu.current(0)
-            my_menu.bind("<<ComboboxSelected>>", lambda event: nodeData.checkNode(my_menu, my_label, my_canvas, my_panel2, storeNodes))
-
-        elif msg == Messages.STOP:
-            my_canvas = guiRef.canvas
-            my_canvas.bind("<ButtonPress-1>", lambda event: move.move_start(event, my_canvas))
-            my_canvas.bind("<B1-Motion>", lambda event: move.move_move(event, my_canvas))
-
-            my_canvas.bind("<ButtonPress-2>", lambda event: move.pressed2(event, my_canvas))
-            my_canvas.bind("<Motion>", lambda event: move.move_move2(event, my_canvas))
-
-            # linux scroll
-            my_canvas.bind("<Button-4>", lambda event: zoom.zoomerP(event, my_canvas))
-            my_canvas.bind("<Button-5>", lambda event: zoom.zoomerM(event, my_canvas))
-            # windows scroll
-            my_canvas.bind("<MouseWheel>", lambda event: zoom.zoomer(event, my_canvas))
-
-            parser.load_simulation(app.get_dom().getElementsByTagName("p"), storeNodes, my_canvas)
 
 
 # def onObjectClick(event, node, label):
@@ -56,6 +20,13 @@ def updateCycle(guiRef, queue):
 #     print(tags)
 
 
+class Messages(Enum):
+    FILE = 0,
+    START = 0,
+    STOP = 0
+
+
+
 if __name__ == '__main__':
     root = tk.Tk()
     root.geometry("1200x1000")
@@ -64,7 +35,7 @@ if __name__ == '__main__':
     frame = tk.Frame(root, bg="#d2d6d6")
     frame.pack(fill="both", expand=True)
     guiRef = app.gui(frame, queue, Messages)
-    t = Thread(target=updateCycle, args=(guiRef, queue,))
+    t = Thread(target=logic.updateCycle, args=(guiRef, queue, Messages))
     t.daemon = True
     t.start()
     tk.mainloop()

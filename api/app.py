@@ -2,10 +2,8 @@ import time
 import tkinter as tk
 from tkinter import ttk
 from types import SimpleNamespace
-import xml.dom.minidom
 
 fontSize = 10
-doc = xml.dom.minidom.parse("ns3.xml")
 
 def create_grid(canvas):
     w = canvas.winfo_reqwidth() - 6  # Get current width of canvas
@@ -27,10 +25,13 @@ def gui(frame, queue, Messages):
     label = tk.StringVar()
     label.set("Control Panel")
     tk.Label(control_panel, bg="#d2d6d6", textvariable=label).grid(row=0, column=1, pady=5)
-    startbtn = tk.Button(control_panel, text="SIMULATE", command=lambda: queue.put(Messages.CLICK))
-    startbtn.grid(row=1, column=0, pady=5, ipady=10, ipadx=10)
-    nodeBtn = tk.Button(control_panel, text="STOP", command=lambda: queue.put(Messages.STOP))
-    nodeBtn.grid(row=1, column=2, pady=5, ipady=10, ipadx=25)
+    file_button = tk.Button(control_panel, text="File", command=lambda: queue.put(Messages.FILE))
+    file_button.grid(row=1, column=0, pady=5, ipady=10, ipadx=10)
+    start_button = tk.Button(control_panel, text="START", command=lambda: queue.put(Messages.START))
+    start_button.grid(row=1, column=2, pady=5, ipady=10, ipadx=25)
+
+    stop_button = tk.Button(control_panel, text="STOP", command=lambda: queue.put(Messages.STOP))
+    stop_button.grid(row=1, column=3, pady=5, ipady=10, ipadx=25)
 
     panel = tk.PanedWindow(frame)
     panel.grid(row=1, column=0, sticky="nsew", padx=200, pady=50)
@@ -70,8 +71,6 @@ def gui(frame, queue, Messages):
     return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, panel2=panel2, menu=menu)
 
 
-def get_dom():
-    return doc
 
 def  draw_communication(srcX, srcY, dstX, dstY, canvas):
     arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST)
