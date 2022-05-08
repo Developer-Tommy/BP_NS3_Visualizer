@@ -1,6 +1,3 @@
-import time
-import xml.dom.minidom
-from api import *
 from tkinter import filedialog
 
 class Data:

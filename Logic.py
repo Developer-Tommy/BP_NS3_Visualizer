@@ -1,11 +1,7 @@
-
-from pickle import TRUE
 from api import *
 from utils import *
 import xml.dom.minidom
-
 from utils.parser import file_open
-
 
 storeNodes = list()
 source_document = xml.dom.minidom
@@ -13,12 +9,12 @@ simulation = []
 line_counter = 0
 is_paused = False
 
-
-def updateCycle(guiRef, queue, Messages):
+def updateCycle(guiRef, queue):
     while True:
         msg = queue.get()
         print(msg)
-        if msg == Messages.FILE:
+        global is_paused
+        if msg == "FILE":
             my_canvas = guiRef.canvas
             my_menu = guiRef.menu
             my_label = guiRef.label
@@ -42,7 +38,7 @@ def updateCycle(guiRef, queue, Messages):
             # windows scroll
             my_canvas.bind("<MouseWheel>", lambda event: zoom.zoomer(event, my_canvas))
 
-        elif msg == Messages.START:
+        elif msg == "START":
             my_canvas = guiRef.canvas
             is_paused = False
 
@@ -51,20 +47,21 @@ def updateCycle(guiRef, queue, Messages):
             my_canvas.unbind("<Button-5>")
             # windows scroll
             my_canvas.unbind("<MouseWheel>")
+            global line_counter
             simulation = source_document.getElementsByTagName("p")
             line_counter = load_simulation(simulation, storeNodes, my_canvas, line_counter)
 
-        elif msg == Messages.STOP:
+        elif msg == "STOP":
+            print(is_paused)
             my_canvas = guiRef.canvas
             is_paused = True
+            print(is_paused)
             # linux scroll
             my_canvas.bind("<Button-4>", lambda event: zoom.zoomerP(event, my_canvas))
             my_canvas.bind("<Button-5>", lambda event: zoom.zoomerM(event, my_canvas))
             # windows scroll
             my_canvas.bind("<MouseWheel>", lambda event: zoom.zoomer(event, my_canvas))
             
-
-
         # elif msg == Messages.CLICK:
         #     my_canvas = guiRef.canvas
         #     my_menu = guiRef.menu
@@ -75,8 +72,9 @@ def updateCycle(guiRef, queue, Messages):
         #         my_menu['values'] = tuple(list(my_menu['values']) + [str(node.id)])
         #     my_menu.current(0)
         #     my_menu.bind("<<ComboboxSelected>>", lambda event: nodeData.checkNode(my_menu, my_label, my_canvas, my_panel2, storeNodes))
-def load_simulation(simulation, storeNodes, canvas, counter):
 
+
+def load_simulation(simulation, storeNodes, canvas, counter):
     for x in range(counter, len(simulation)):
         if is_paused:
             return x

@@ -19,18 +19,20 @@ def create_grid(canvas):
     canvas.create_line([(0, 1000), (w * 2, 1000)], tag='grid_line')
     canvas.create_line([(1000, 0), (1000, h * 2)], tag='grid_line')
 
-def gui(frame, queue, Messages):
+def gui(frame, queue):
     control_panel = tk.PanedWindow(frame, bg="#d2d6d6")
     control_panel.grid(row=0, column=0, pady=15)
     label = tk.StringVar()
     label.set("Control Panel")
     tk.Label(control_panel, bg="#d2d6d6", textvariable=label).grid(row=0, column=1, pady=5)
-    file_button = tk.Button(control_panel, text="File", command=lambda: queue.put(Messages.FILE))
+
+    file_button = tk.Button(control_panel, text="File", command=lambda: queue.put("FILE"))
     file_button.grid(row=1, column=0, pady=5, ipady=10, ipadx=10)
-    start_button = tk.Button(control_panel, text="START", command=lambda: queue.put(Messages.START))
+
+    start_button = tk.Button(control_panel, text="START", command=lambda: queue.put("START"))
     start_button.grid(row=1, column=2, pady=5, ipady=10, ipadx=25)
 
-    stop_button = tk.Button(control_panel, text="STOP", command=lambda: queue.put(Messages.STOP))
+    stop_button = tk.Button(control_panel, text="STOP", command=lambda: queue.put("STOP"))
     stop_button.grid(row=1, column=3, pady=5, ipady=10, ipadx=25)
 
     panel = tk.PanedWindow(frame)
@@ -71,8 +73,7 @@ def gui(frame, queue, Messages):
     return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, panel2=panel2, menu=menu)
 
 
-
-def  draw_communication(srcX, srcY, dstX, dstY, canvas):
+def draw_communication(srcX, srcY, dstX, dstY, canvas):
     arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST)
     time.sleep(0.5)
     canvas.delete(arrow)
