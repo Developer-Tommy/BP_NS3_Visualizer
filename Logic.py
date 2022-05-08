@@ -17,6 +17,7 @@ is_paused = False
 def updateCycle(guiRef, queue, Messages):
     while True:
         msg = queue.get()
+        print(msg)
         if msg == Messages.FILE:
             my_canvas = guiRef.canvas
             my_menu = guiRef.menu
