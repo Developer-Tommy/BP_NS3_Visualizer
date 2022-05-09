@@ -26,6 +26,9 @@ if __name__ == '__main__':
     frame.pack(fill="both", expand=True)
     guiRef = app.gui(frame, queue)
     t = Thread(target=logic.updateCycle, args=(guiRef, queue))
+    simulaton_thread = Thread(target=logic.sim, args=(guiRef,))
     t.daemon = True
     t.start()
+    simulaton_thread.daemon = True
+    simulaton_thread.start()
     tk.mainloop()
