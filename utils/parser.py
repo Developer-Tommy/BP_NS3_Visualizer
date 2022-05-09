@@ -32,8 +32,8 @@ class Node:
         self.canvas.move(self.node, new_posX, new_posY)
 
     def set_size(self, new_width, new_height):
-        new_width = new_width * 25
-        new_height = new_height * 25
+        new_width = new_width * 10
+        new_height = new_height * 10
         x0, y0, x1, y1 = self.canvas.coords(self.node)
         self.canvas.coords(self.node, x0-new_width, y0-new_height, x1+new_width, y1+new_height)
         x0, y0, x1, y1 = self.canvas.coords(self.node)
@@ -97,6 +97,7 @@ def node_update(node, update):
         node.set_color(color)
     elif update.getAttribute("p") == "s":
         node.set_size(int(update.getAttribute("w")), int(update.getAttribute("h")))
+        print("teraz sme v setsize")
     elif update.getAttribute("p") == "p":
         node.set_pos(int(update.getAttribute("x")), int(update.getAttribute("y")))
     elif update.getAttribute("p") == "d":

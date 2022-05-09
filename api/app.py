@@ -1,3 +1,4 @@
+from textwrap import fill
 import time
 import tkinter as tk
 from tkinter import ttk
@@ -74,6 +75,6 @@ def gui(frame, queue):
 
 
 def draw_communication(srcX, srcY, dstX, dstY, canvas):
-    arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST)
+    arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill = "green")
     time.sleep(0.5)
     canvas.delete(arrow)

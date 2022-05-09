@@ -67,9 +67,15 @@ def updateCycle(guiRef, queue):
 def load_simulation_frame(simulation_frame, storeNodes, canvas):
         source_node = nodeData.findNode_by_id(simulation_frame.getAttribute("fId"), storeNodes)
         destination_node = nodeData.findNode_by_id(simulation_frame.getAttribute("tId"), storeNodes)
-        app.draw_communication(source_node.posx, source_node.posy, destination_node.posx, destination_node.posy, canvas)
-        print('x: ',source_node.posx)
-        print('y: ', source_node.posy)
+        srcx0, srcy0, srcx1, srcy1 = canvas.coords(source_node.node)
+        dstx0, dsty0, dstx1, dsty1 = canvas.coords(destination_node.node)
+        print(" src pred zmenou",srcx0, srcy0, srcx1, srcy1)
+        print(" dst pred zmenou",dstx0, dsty0, dstx1, dsty1)
+        app.draw_communication(cords(srcx0,srcx1), cords(srcy0,srcy1), cords(dstx0,dstx1), cords(dsty0,dsty1), canvas)
+        print( " cords src x", cords(srcx0,srcx1))
+        print( " cords src y", cords(srcy0,srcy1))
+        print( " cords dest x", cords(dstx0,dstx1))
+        print( " cords dest y", cords(dsty0,dsty1))
 
 def sim(guiRef):
     global is_paused
@@ -86,3 +92,9 @@ def sim(guiRef):
             sleep(0.5)
         else:
             sleep(0.5)
+
+
+def cords(x0, x1):
+    x = (x0 + x1)/2
+
+    return x,
