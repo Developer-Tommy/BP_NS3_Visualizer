@@ -61,6 +61,8 @@ def load_simulation_frame(simulation_frame, storeNodes, canvas, arrow_queue):
         srcx0, srcy0, srcx1, srcy1 = canvas.coords(source_node.node)
         dstx0, dsty0, dstx1, dsty1 = canvas.coords(destination_node.node)
         arrow_queue.put(app.draw_communication(cords(srcx0,srcx1), cords(srcy0,srcy1), cords(dstx0,dstx1), cords(dsty0,dsty1), canvas))
+        #Checkovat ci "t" z <nu> je v intervale medzi "fbTx" zo simulation_frame a "fbTx" z po ňom iducého <p>
+        #Vtedy nodeUpdate() po vykreslení šipky
 
 
 def sim(guiRef):

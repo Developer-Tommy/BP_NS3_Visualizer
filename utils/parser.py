@@ -84,7 +84,7 @@ def readXML(myCanvas, storeNodes, doc):
         for n in nu:
             # print("nuID: ", n.getAttribute("id"))
             if int(n.getAttribute("id")) == int(node.getAttribute("id")):
-                if float(n.getAttribute("t")) > 0:
+                if float(n.getAttribute("t")) > 0.0:
                     break
                 node_update(circle, n)
         storeNodes.append(circle)
