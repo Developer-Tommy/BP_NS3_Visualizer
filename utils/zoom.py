@@ -1,5 +1,3 @@
-from api import *
-
 fontSize = 10
 scale = 1
 x = 0

@@ -79,12 +79,12 @@ def readXML(myCanvas, storeNodes, doc):
 
     #Node Updates check 
     for node in nodes:
-        circle = Node(int(node.getAttribute("id")), myCanvas, int(node.getAttribute("locX")), int(node.getAttribute("locY")), "red", "", allAddresses[count])
+        circle = Node(int(node.getAttribute("id")), myCanvas, float(node.getAttribute("locX")), float(node.getAttribute("locY")), "red", "", allAddresses[count])
         # print("nodeID: ", int(node.getAttribute("id")))
         for n in nu:
             # print("nuID: ", n.getAttribute("id"))
             if int(n.getAttribute("id")) == int(node.getAttribute("id")):
-                if int(n.getAttribute("t")) > 0:
+                if float(n.getAttribute("t")) > 0:
                     break
                 node_update(circle, n)
         storeNodes.append(circle)
@@ -99,7 +99,7 @@ def node_update(node, update):
         node.set_size(int(update.getAttribute("w")), int(update.getAttribute("h")))
         print("teraz sme v setsize")
     elif update.getAttribute("p") == "p":
-        node.set_pos(int(update.getAttribute("x")), int(update.getAttribute("y")))
+        node.set_pos(float(update.getAttribute("x")), float(update.getAttribute("y")))
     elif update.getAttribute("p") == "d":
         node.set_description(update.getAttribute("descr"))
     else:

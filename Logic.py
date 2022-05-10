@@ -45,7 +45,6 @@ def updateCycle(guiRef, queue):
 
             # guiRef.frame.start_button.enableButton.config(state = 'active')
 
-            
         elif msg == "START":
             simulation = source_document.getElementsByTagName("p")
             is_paused = False
@@ -73,8 +72,8 @@ def sim(guiRef):
             # print('STOP Pressed')
             sleep(0.5)
 
-        elif not is_paused and len(simulation) >line_counter :
-            load_simulation_frame(simulation[line_counter],storeNodes, guiRef.canvas, arrow_queue)
+        elif not is_paused and len(simulation) > line_counter:
+            load_simulation_frame(simulation[line_counter], storeNodes, guiRef.canvas, arrow_queue)
             line_counter += 1
             # print('START Pressed')
             sleep(0.5)
@@ -82,8 +81,6 @@ def sim(guiRef):
             sleep(0.5)
 
 
-
 def cords(x0, x1):
     x = (x0 + x1)/2
-
-    return x,
+    return x
