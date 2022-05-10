@@ -52,7 +52,7 @@ def gui(frame, queue):
     global fontSize
     frame.fontSize = fontSize
 
-    create_grid(canvas)
+    # create_grid(canvas)
 
     node_panel = tk.PanedWindow(panel)
     node_panel.grid(row=1, column=2, sticky="nsew")
@@ -75,6 +75,5 @@ def gui(frame, queue):
 
 
 def draw_communication(srcX, srcY, dstX, dstY, canvas):
-    arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill = "green")
-    time.sleep(0.5)
-    canvas.delete(arrow)
+    arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill = "green", width=3)
+    return arrow

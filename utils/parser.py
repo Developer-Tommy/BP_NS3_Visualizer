@@ -32,8 +32,8 @@ class Node:
         self.canvas.move(self.node, new_posX, new_posY)
 
     def set_size(self, new_width, new_height):
-        new_width = new_width * 10
-        new_height = new_height * 10
+        new_width = new_width * 2
+        new_height = new_height * 2
         x0, y0, x1, y1 = self.canvas.coords(self.node)
         self.canvas.coords(self.node, x0-new_width, y0-new_height, x1+new_width, y1+new_height)
         x0, y0, x1, y1 = self.canvas.coords(self.node)
@@ -104,18 +104,6 @@ def node_update(node, update):
         node.set_description(update.getAttribute("descr"))
     else:
         return
-
-
-
-
-
-
-    # for line in simulation:
-    #     source_node = nodeData.findNode_by_id(line.getAttribute("fId"), storeNodes)
-    #     destination_node = nodeData.findNode_by_id(line.getAttribute("tId"), storeNodes)
-    #     app.draw_communication(source_node.posx, source_node.posy, destination_node.posx, destination_node.posy, canvas)
-    # return counter
-
 
 def file_open():
     path = filedialog.askopenfilename(filetypes=[("SEM readable files", ( ".xml")), ("SEM XML files", ("*.xml", ".sem")), ("All files", ".*")])
