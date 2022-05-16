@@ -1,4 +1,6 @@
 from tkinter import filedialog
+import Logic as logic
+from api import *
 
 class Data:
     def __init__(self, id, ip, channel):
@@ -57,6 +59,8 @@ def readXML(myCanvas, storeNodes, doc):
     nu = doc.getElementsByTagName("nu")
 
     addresNodes = doc.getElementsByTagName("nonp2plinkproperties")
+    point_to_point = doc.getElementsByTagName("link")
+
 
     address = []
     allAddresses = []
@@ -64,6 +68,7 @@ def readXML(myCanvas, storeNodes, doc):
 
     for a in addresNodes:
         if int(a.getAttribute("id")) != index:
+            address.pop()
             allAddresses.append(address)
             address = []
             index = index + 1
@@ -71,24 +76,32 @@ def readXML(myCanvas, storeNodes, doc):
             data = Data(int(a.getAttribute("id")), a.getAttribute("ipAddress"), a.getAttribute("channelType"))
             address.append(data)
 
+    address.pop()
     allAddresses.append(address)
 
     count = 0
 
-    print(len(nu))
-
     #Node Updates check 
     for node in nodes:
         circle = Node(int(node.getAttribute("id")), myCanvas, float(node.getAttribute("locX")), float(node.getAttribute("locY")), "red", "", allAddresses[count])
-        # print("nodeID: ", int(node.getAttribute("id")))
         for n in nu:
-            # print("nuID: ", n.getAttribute("id"))
             if int(n.getAttribute("id")) == int(node.getAttribute("id")):
                 if float(n.getAttribute("t")) > 0.0:
                     break
                 node_update(circle, n)
         storeNodes.append(circle)
         count = count + 1
+
+    for connect in point_to_point:
+        src = nodeData.findNode_by_id(int(connect.getAttribute("fromId")), storeNodes)
+        dst = nodeData.findNode_by_id(int(connect.getAttribute("toId")), storeNodes)
+        new_data_src = Data(src.id, connect.getAttribute("fd"), "Point-To-Point")
+        new_data_dst = Data(dst.id, connect.getAttribute("td"), "Point-To-Point")
+        src.data.append(new_data_src)
+        dst.data.append(new_data_dst)
+        srcx0, srcy0, srcx1, srcy1 = myCanvas.coords(src.node)
+        dstx0, dsty0, dstx1, dsty1 = myCanvas.coords(dst.node)
+        app.draw_connection(logic.cords(srcx0, srcx1), logic.cords(srcy0, srcy1), logic.cords(dstx0, dstx1), logic.cords(dsty0, dsty1),myCanvas)
 
 
 def node_update(node, update):

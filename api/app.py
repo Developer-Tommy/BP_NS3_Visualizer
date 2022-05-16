@@ -74,6 +74,12 @@ def gui(frame, queue):
     return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, panel2=panel2, menu=menu)
 
 
-def draw_communication(srcX, srcY, dstX, dstY, canvas):
-    arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill = "green", width=3)
+def draw_communication(srcX, srcY, dstX, dstY, canvas, color, dash):
+    if dash:
+        arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill=color, width=3, dash=(5,3))
+    else:
+        arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill=color, width=3)
     return arrow
+
+def draw_connection(srcX, srcY, dstX, dstY, canvas):
+    canvas.create_line(srcX, srcY, dstX, dstY, fill="black", width=3)
