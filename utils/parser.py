@@ -21,8 +21,10 @@ class Node:
         self.data = data
         self.desc = desc
         self.color = color
-        self.node = canvas.create_oval(self.posx, self.posy, self.posx, self.posy,
-                                       outline="black", fill=self.color, width=1)
+        self.node = canvas.create_oval(self.posx, self.posy, self.posx, self.posy, outline="black", fill=self.color, width=1)
+        x0, y0, x1, y1 = self.canvas.coords(self.node)
+        self.text = self.canvas.create_text(logic.cords(x0, x1), logic.cords(y0, y1), text=self.desc, fill="white")
+
     # setter method
     def set_color(self, new_color):
         self.color = new_color
@@ -32,19 +34,15 @@ class Node:
         self.posx = new_posX
         self.posy = new_posY
         self.canvas.move(self.node, new_posX, new_posY)
+        self.canvas.move(self.text, new_posX, new_posY)
 
     def set_size(self, new_width, new_height):
-        new_width = new_width * 2
-        new_height = new_height * 2
         x0, y0, x1, y1 = self.canvas.coords(self.node)
         self.canvas.coords(self.node, x0-new_width, y0-new_height, x1+new_width, y1+new_height)
-        x0, y0, x1, y1 = self.canvas.coords(self.node)
-        print(x0, y0, x1, y1)
-        print("\n")
 
     def set_description(self, new_desc):
-        print(new_desc)
         self.desc = new_desc
+        self.canvas.itemconfig(self.text, text=self.desc)
 
     def printNode(self):
         print("id: ", self.id, " start posX: ", self.posx + 85, " start posY: ", self.posy + 85, " end posX: ", self.posx + 115, " end posY: ", self.posy + 115)
@@ -110,7 +108,6 @@ def node_update(node, update):
         node.set_color(color)
     elif update.getAttribute("p") == "s":
         node.set_size(int(update.getAttribute("w")), int(update.getAttribute("h")))
-        print("teraz sme v setsize")
     elif update.getAttribute("p") == "p":
         node.set_pos(float(update.getAttribute("x")), float(update.getAttribute("y")))
     elif update.getAttribute("p") == "d":
