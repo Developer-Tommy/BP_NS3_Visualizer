@@ -36,6 +36,9 @@ def gui(frame, queue):
     stop_button = tk.Button(control_panel, text="STOP", command=lambda: queue.put("STOP"))
     stop_button.grid(row=1, column=3, pady=5, ipady=10, ipadx=25)
 
+    time_label = tk.Label(control_panel, text="0.0", bg="black", fg="white")
+    time_label.grid(row=1, column=4, pady=5, ipady=8, ipadx=10)
+
     panel = tk.PanedWindow(frame)
     panel.grid(row=1, column=0, sticky="nsew", padx=200, pady=50)
 
@@ -71,7 +74,7 @@ def gui(frame, queue):
     dataLabel = tk.Label(panel2)
     dataLabel.grid(row=0, column=0, sticky="nsew", ipadx=20, ipady=20)
 
-    return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, panel2=panel2, menu=menu)
+    return SimpleNamespace(label=dataLabel, canvas=canvas, panel=panel, panel2=panel2, menu=menu, time=time_label)
 
 
 def draw_communication(srcX, srcY, dstX, dstY, canvas, color, dash):

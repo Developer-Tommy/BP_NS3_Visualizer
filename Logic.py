@@ -68,7 +68,7 @@ def updateCycle(guiRef, queue):
             is_paused = True
             
 
-def load_simulation_frame(simulation_frame, next_simulation_frame, wifi_sent_to, storeNodes, canvas, arrow_queue):
+def load_simulation_frame(simulation_frame, next_simulation_frame, wifi_sent_to, storeNodes, canvas, time_label, arrow_queue):
         while not arrow_queue.empty():
                 canvas.delete(arrow_queue.get())
         source_node = nodeData.findNode_by_id(simulation_frame.getAttribute("fId"), storeNodes)
@@ -79,11 +79,13 @@ def load_simulation_frame(simulation_frame, next_simulation_frame, wifi_sent_to,
                 if int(wifi.getAttribute("uId")) == uId:
                     destination_node = nodeData.findNode_by_id(wifi.getAttribute("tId"), storeNodes)
                     dstx0, dsty0, dstx1, dsty1 = canvas.coords(destination_node.node)
+                    time_label.config(text=float(simulation_frame.getAttribute("fbTx")))
                     arrow_queue.put(app.draw_communication(cords(srcx0, srcx1), cords(srcy0, srcy1), cords(dstx0, dstx1),cords(dsty0, dsty1), canvas, "blue", True))
 
         if simulation_frame.tagName == "p":
             destination_node = nodeData.findNode_by_id(simulation_frame.getAttribute("tId"), storeNodes)
             dstx0, dsty0, dstx1, dsty1 = canvas.coords(destination_node.node)
+            time_label.config(text=float(simulation_frame.getAttribute("fbTx")))
             arrow_queue.put(app.draw_communication(cords(srcx0,srcx1), cords(srcy0,srcy1), cords(dstx0,dstx1), cords(dsty0,dsty1), canvas, "green", False))
 
         if next_simulation_frame != 0:
@@ -105,12 +107,12 @@ def sim(guiRef):
             sleep(0.5)
 
         elif not is_paused and len(simulation)-1 > line_counter:
-            load_simulation_frame(simulation[line_counter], simulation[line_counter+1], wifi_communication, storeNodes, guiRef.canvas, arrow_queue)
+            load_simulation_frame(simulation[line_counter], simulation[line_counter+1], wifi_communication, storeNodes, guiRef.canvas, guiRef.time, arrow_queue)
             line_counter += 1
             # print('START Pressed')
             sleep(0.5)
         elif not is_paused and len(simulation)-1 == line_counter:
-            load_simulation_frame(simulation[line_counter], 0, wifi_communication, storeNodes, guiRef.canvas, arrow_queue)
+            load_simulation_frame(simulation[line_counter], 0, wifi_communication, storeNodes, guiRef.canvas, guiRef.time, arrow_queue)
             line_counter += 1
             # print('START Pressed')
             sleep(0.5)
