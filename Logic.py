@@ -5,6 +5,7 @@ import xml.dom.minidom
 from utils.parser import file_open
 from time import sleep
 from random import randint
+import ns3Visualizer as ns
 myFlag = False
 
 storeNodes = list()
@@ -63,7 +64,6 @@ def updateCycle(guiRef, queue):
             for nu in source_document.getElementsByTagName("nu"):
                 if float(nu.getAttribute("t")) > 0.0:
                     update_nodes_positions.append(nu)
-                    print("toto je udalost " , nu)
 
             simulation = quicksort(simulation)
 

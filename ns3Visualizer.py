@@ -16,7 +16,6 @@ import Logic as logic
 #     tags = event.widget.gettags(item)
 #     print(tags)
 
-
 if __name__ == '__main__':
     root = tk.Tk()
     root.geometry("1200x1000")
@@ -25,10 +24,13 @@ if __name__ == '__main__':
     frame = tk.Frame(root, bg="#d2d6d6")
     frame.pack(fill="both", expand=True)
     guiRef = app.gui(frame, queue)
-    t = Thread(target=logic.updateCycle, args=(guiRef, queue))
-    simulaton_thread = Thread(target=logic.sim, args=(guiRef,))
-    t.daemon = True
-    t.start()
-    simulaton_thread.daemon = True
-    simulaton_thread.start()
+    control_thread = Thread(target=logic.updateCycle, args=(guiRef, queue))
+    simulation_thread = Thread(target=logic.sim, args=(guiRef,))
+    control_thread.daemon = True
+    control_thread.start()
+    simulation_thread.daemon = True
+    simulation_thread.start()
     tk.mainloop()
+
+
+
