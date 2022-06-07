@@ -50,8 +50,11 @@ def updateCycle(guiRef, queue):
             my_menu.bind("<<ComboboxSelected>>", lambda event: nodeData.checkNode(my_menu, my_label, my_canvas, my_panel2, storeNodes))
 
             # guiRef.frame.start_button.enableButton.config(state = 'active')
+            # simulation = source_document.getElementsByTagName("p")
+            # simulation = source_document.getElementsByTagName("wpr")
+            # for i in simulation:
+            #     print("toto je udalost " , i)
 
-        elif msg == "START":
             simulation = source_document.getElementsByTagName("p")
             wifi_communication = source_document.getElementsByTagName("wpr")
 
@@ -60,8 +63,11 @@ def updateCycle(guiRef, queue):
             for nu in source_document.getElementsByTagName("nu"):
                 if float(nu.getAttribute("t")) > 0.0:
                     update_nodes_positions.append(nu)
+                    print("toto je udalost " , nu)
 
             simulation = quicksort(simulation)
+
+        elif msg == "START":
             is_paused = False
 
         elif msg == "STOP":
@@ -107,6 +113,7 @@ def sim(guiRef):
             sleep(0.5)
 
         elif not is_paused and len(simulation)-1 > line_counter:
+            
             load_simulation_frame(simulation[line_counter], simulation[line_counter+1], wifi_communication, storeNodes, guiRef.canvas, guiRef.time, arrow_queue)
             line_counter += 1
             # print('START Pressed')
