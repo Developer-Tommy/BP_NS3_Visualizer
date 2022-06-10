@@ -5,7 +5,7 @@ import xml.dom.minidom
 from utils.parser import file_open
 from time import sleep
 from random import randint
-import ns3Visualizer as ns
+
 myFlag = False
 
 storeNodes = list()
@@ -49,12 +49,6 @@ def updateCycle(guiRef, queue):
                 my_menu['values'] = tuple(list(my_menu['values']) + [str(node.id)])
             my_menu.current(0)
             my_menu.bind("<<ComboboxSelected>>", lambda event: nodeData.checkNode(my_menu, my_label, my_canvas, my_panel2, storeNodes))
-
-            # guiRef.frame.start_button.enableButton.config(state = 'active')
-            # simulation = source_document.getElementsByTagName("p")
-            # simulation = source_document.getElementsByTagName("wpr")
-            # for i in simulation:
-            #     print("toto je udalost " , i)
 
             simulation = source_document.getElementsByTagName("p")
             wifi_communication = source_document.getElementsByTagName("wpr")
@@ -124,6 +118,7 @@ def sim(guiRef):
             # print('START Pressed')
             sleep(0.5)
         else:
+            print("else")
             sleep(0.5)
 
 
@@ -132,21 +127,14 @@ def cords(x0, x1):
     return x
 
 def quicksort(array):
-    # If the input array contains fewer than two elements,
-    # then return it as the result of the function
+
     if len(array) < 2:
         return array
 
     low, same, high = [], [], []
-
-    # Select your `pivot` element randomly
     pivot = array[randint(0, len(array) - 1)]
 
     for item in array:
-        # Elements that are smaller than the `pivot` go to
-        # the `low` list. Elements that are larger than
-        # `pivot` go to the `high` list. Elements that are
-        # equal to `pivot` go to the `same` list.
         if float(item.getAttribute("fbTx")) < float(pivot.getAttribute("fbTx")):
             low.append(item)
         elif float(item.getAttribute("fbTx")) == float(pivot.getAttribute("fbTx")):
@@ -154,6 +142,4 @@ def quicksort(array):
         elif float(item.getAttribute("fbTx")) > float(pivot.getAttribute("fbTx")):
             high.append(item)
 
-    # The final result combines the sorted `low` list
-    # with the `same` list and the sorted `high` list
     return quicksort(low) + same + quicksort(high)
