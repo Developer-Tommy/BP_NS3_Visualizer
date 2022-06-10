@@ -18,7 +18,7 @@ import Logic as logic
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.geometry("1200x1000")
+    root.geometry("950x800")
     root.title("Visualiser")
     queue = Queue()
     frame = tk.Frame(root, bg="#d2d6d6")

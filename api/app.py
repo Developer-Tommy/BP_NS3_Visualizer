@@ -22,27 +22,24 @@ def create_grid(canvas):
 
 def gui(frame, queue):
     control_panel = tk.PanedWindow(frame, bg="#d2d6d6")
-    control_panel.grid(row=0, column=0, pady=15)
-    label = tk.StringVar()
-    label.set("Control Panel")
-    tk.Label(control_panel, bg="#d2d6d6", textvariable=label).grid(row=0, column=1, pady=5)
+    control_panel.grid(row=0, column=0, sticky="nw", padx=5)
 
     file_button = tk.Button(control_panel, text="File", command=lambda: queue.put("FILE"))
-    file_button.grid(row=1, column=0, pady=5, ipady=10, ipadx=10)
+    file_button.grid(row=0, column=0, pady=5, ipady=10, ipadx=10)
 
     start_button = tk.Button(control_panel, text="START", command=lambda: queue.put("START"))
-    start_button.grid(row=1, column=2, pady=5, ipady=10, ipadx=25)
+    start_button.grid(row=0, column=2, pady=5, ipady=10, ipadx=25)
 
     stop_button = tk.Button(control_panel, text="STOP", command=lambda: queue.put("STOP"))
-    stop_button.grid(row=1, column=3, pady=5, ipady=10, ipadx=25)
+    stop_button.grid(row=0, column=3, pady=5, ipady=10, ipadx=25)
 
     time_label = tk.Label(control_panel, text="0.0", bg="black", fg="white")
-    time_label.grid(row=1, column=4, pady=5, ipady=8, ipadx=10)
+    time_label.grid(row=0, column=4, pady=5, ipady=8, ipadx=10)
 
     panel = tk.PanedWindow(frame)
-    panel.grid(row=1, column=0, sticky="nsew", padx=200, pady=50)
+    panel.grid(row=1, column=0, sticky="nsew", padx=5)
 
-    canvas = tk.Canvas(panel, width=500, height=500, highlightbackground="black")
+    canvas = tk.Canvas(panel, width=700, height=700, highlightbackground="black")
     xsb = tk.Scrollbar(panel, orient="horizontal", command=canvas.xview)
     ysb = tk.Scrollbar(panel, orient="vertical", command=canvas.yview)
     canvas.configure(yscrollcommand=ysb.set, xscrollcommand=xsb.set)
@@ -68,7 +65,7 @@ def gui(frame, queue):
 
     variable = tk.StringVar()
 
-    menu = ttk.Combobox(panel1, state="readonly", width=25, textvariable=variable)
+    menu = ttk.Combobox(panel1, state="readonly", width=30, textvariable=variable)
     menu.grid(row=0, column=0, pady=10)
 
     dataLabel = tk.Label(panel2)
@@ -79,10 +76,10 @@ def gui(frame, queue):
 
 def draw_communication(srcX, srcY, dstX, dstY, canvas, color, dash):
     if dash:
-        arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill=color, width=3, dash=(5,3))
+        arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill=color, width=4, dash=(5,3))
     else:
-        arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill=color, width=3)
+        arrow = canvas.create_line(srcX, srcY, dstX, dstY, arrow=tk.LAST, fill=color, width=4)
     return arrow
 
 def draw_connection(srcX, srcY, dstX, dstY, canvas):
-    canvas.create_line(srcX, srcY, dstX, dstY, fill="black", width=3)
+    canvas.create_line(srcX, srcY, dstX, dstY, fill="black", width=2)
