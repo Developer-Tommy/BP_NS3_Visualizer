@@ -94,31 +94,25 @@ def load_simulation_frame(simulation_frame, next_simulation_frame, wifi_sent_to,
                         next_simulation_frame.getAttribute("fbTx")):
                     updated_node = nodeData.findNode_by_id(nu.getAttribute("id"), storeNodes)
                     parser.node_update(updated_node, nu)
-                    print("new position of runner")
 
 
 def sim(guiRef):
     global is_paused
     global line_counter
+    slider = guiRef.slider
     arrow_queue = Queue()
     while True:
         if is_paused:
-            # print('STOP Pressed')
             sleep(0.5)
-
         elif not is_paused and len(simulation)-1 > line_counter:
-            
             load_simulation_frame(simulation[line_counter], simulation[line_counter+1], wifi_communication, storeNodes, guiRef.canvas, guiRef.time, arrow_queue)
             line_counter += 1
-            # print('START Pressed')
-            sleep(0.5)
+            sleep(slider.get())
         elif not is_paused and len(simulation)-1 == line_counter:
             load_simulation_frame(simulation[line_counter], 0, wifi_communication, storeNodes, guiRef.canvas, guiRef.time, arrow_queue)
             line_counter += 1
-            # print('START Pressed')
-            sleep(0.5)
+            sleep(slider.get())
         else:
-            print("else")
             sleep(0.5)
 
 
